@@ -418,14 +418,15 @@ class LipsDialog(QWidget):
         QSound("sound/t1.wav").play()
 
     def enableEmailandCapture(self):
-        #QPixmap.grabWidget(self.imgLabel).save('Image/captureImage_1.jpg', 'jpg')
-        # 처음 저장은 1
+        #ImgLabel의 웹캠 frame 캡쳐
         p= QPixmap.grabWidget(self.imgLabel)
 
+        #txt파일에 저장해놓은 이미지 번호 읽어오기
         f = open("ImageNum.txt", 'r')
         data = f.read()
         f.close()
 
+        #캡쳐 이미지 번호대로 저장
         if data == 1:
             filename = 'C:\Apache24\htdocs\email/captureImage_%s.jpg' % (data,)
             p.save(filename, 'jpg')
@@ -438,10 +439,7 @@ class LipsDialog(QWidget):
             newdata = str(data)
             f.write(newdata)
             f.close()
-
-#        p.save(filename, 'jpg')
-
-        # 찰칵 소리 넣기
+     # 찰칵 효과음
         self.EmailButton.setEnabled(True)
         emailIcon = QIcon()
         emailIcon.addPixmap(QPixmap('image/email.png'), QtGui.QIcon.Active)
@@ -1893,12 +1891,12 @@ class BlushDialog(QWidget):
     def __init__(self, parent=None):
         super(BlushDialog, self).__init__(parent)
         loadUi('blush_Widget.ui',self)
-
+        #웹캠 화면
         self.imgLabel.move(490, 0)
-
-
+        #돌아가기 버튼
         self.gobackButton.setIcon(QtGui.QIcon('image/goback.png'))
         self.gobackButton.setIconSize(QtCore.QSize(100, 100))
+        #블러셔 버튼들
         self.b1.setIcon(QtGui.QIcon('image/blusher/3ce/ce1.jpg'))
         self.b1.setIconSize(QtCore.QSize(150,150))
         self.b1.setStyleSheet("QPushButton:pressed { border: 5px solid yellow}")
@@ -2060,12 +2058,12 @@ class BlushDialog(QWidget):
         self.shopButton.clicked.connect(self.openShop)
 
         self.start_webcam()
-
+    #구매페이지 url 연결
     def openShop(self):
         url='http://localhost'
         chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
         webbrowser.get(chrome_path).open(url)
-
+    #버튼 효과음
     def PlayClick(self):
         QSound("sound/t1.wav").play()
 
@@ -2709,14 +2707,13 @@ class captureDialog(QWidget):
         self.saveButton.setIcon(QtGui.QIcon('image/save.png'))
         self.saveButton.setIconSize(QtCore.QSize(150, 150))
 
-
+    #재입력없이 불러오기 위해 이메일 저장
     def saveEmail(self):
         with open('getEmail.txt', 'r') as f:
             for line in f:
                 x = line.index('@')
                 a = line[:x]
                 b = line[x + 1:]
-                print a, b
                 self.emailEdit.insertPlainText(a)
                 index = self.comboBox.findText(b, QtCore.Qt.MatchFixedString)
                 if index >= 0:
@@ -2724,7 +2721,7 @@ class captureDialog(QWidget):
 
     def PlaySend(self):
         QSound("sound/send.wav").play()
-
+    #저장한 이메일 불러오기
     def readEmail(self):
         UserEmail1 = self.emailEdit.toPlainText()
         UserEmail2 = unicode(self.comboBox.currentText())
@@ -2733,7 +2730,7 @@ class captureDialog(QWidget):
             f.truncate()
             f.write(UserEmail1+"@"+UserEmail2)
             imageemail2.sendEmail()
-
+            # 불러와서 _부분 전 지우고 이메일으로 파일 이름 바꾸기
             folder = "C:\Apache24\htdocs\email/"
             FileList = os.listdir(folder)
             for files in FileList:

@@ -19,7 +19,7 @@ msg['From'] = me
 msg['To'] = you
 msg.preamble = '<Snow White> 당신의 사진이 도착했어요'
 
-
+#이메일 보내기
 def sendEmail():
     f = open("ImageNum.txt", 'r')
     data = f.read()
